@@ -23,6 +23,7 @@ namespace HahnCargoTruckLoader.Library.Logic
         {
             var instructions = new Dictionary<int, LoadingInstruction>();
             var placedCrates = new List<CratePlacement>();
+            int stepNumber = 1; // Initialize step number
 
             foreach (var crate in crates)
             {
@@ -45,6 +46,7 @@ namespace HahnCargoTruckLoader.Library.Logic
                                         {
                                             instructions[crate.CrateID] = new LoadingInstruction
                                             {
+                                                LoadingStepNumber = stepNumber++, // Assign and increment step number
                                                 CrateId = crate.CrateID,
                                                 TopLeftX = x,
                                                 TopLeftY = y,

@@ -23,7 +23,6 @@
             BorderBrush="Black"
             BorderThickness="1">
             <StackPanel>
-
                 <ListView Name="CratesListView" SelectionMode="Single">
                     <ListView.View>
                         <GridView>
@@ -112,12 +111,17 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Button Click="FocusHelixViewport" Content="Placed Crates (click here and use arrow keys to rotate)" />
+                <TextBlock
+                    x:Name="TruckDimentions"
+                    Grid.Row="1"
+                    Text="Truck Dementions" />
                 <helix:HelixViewport3D
                     Name="helixViewport"
-                    Grid.Row="1"
+                    Grid.Row="2"
                     IsHitTestVisible="False"
                     KeyDown="helixViewport_KeyDown">
                     <helix:HelixViewport3D.Camera>
