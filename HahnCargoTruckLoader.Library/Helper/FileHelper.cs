@@ -1,4 +1,4 @@
-﻿using HahnCargoTruckLoader.Model;
+﻿using HahnCargoTruckLoader.Library.Model;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace HahnCargoTruckLoader.Helper
+namespace HahnCargoTruckLoader.Library.Helper
 {
   public class FileHelper
   {

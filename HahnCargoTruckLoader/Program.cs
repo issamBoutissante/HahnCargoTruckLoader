@@ -1,4 +1,4 @@
-﻿using HahnCargoTruckLoader.Logic;
+﻿using HahnCargoTruckLoader.Library.Logic;
 
 
 Console.WriteLine("Hello, Truck-Loader!");

@@ -1,11 +1,11 @@
-﻿using HahnCargoTruckLoader.Model;
+﻿using HahnCargoTruckLoader.Library.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HahnCargoTruckLoader.Logic
+namespace HahnCargoTruckLoader.Library.Logic
 {
   public class LoadingSimulator
   {
