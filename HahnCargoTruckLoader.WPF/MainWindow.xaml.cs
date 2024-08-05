@@ -47,7 +47,7 @@ namespace HahnCargoTruckLoader.WPF
             unplacedViewport.Children.Clear();
 
             // Draw the truck with yellow borders
-            Create3DBox(helixViewport, 0, 0, 0, loadingPlan.truck.Width + 1, loadingPlan.truck.Height + 1, loadingPlan.truck.Length + 1, Colors.Yellow);
+            Create3DBox(helixViewport, 0, 0, 0, loadingPlan.truck.Width, loadingPlan.truck.Height, loadingPlan.truck.Length, Colors.Yellow);
             this.TruckDimentions.Text = $"Width = {loadingPlan.truck.Width} - Length = {loadingPlan.truck.Length} - Height = {loadingPlan.truck.Height} - Volume = {loadingPlan.truck.Width * loadingPlan.truck.Length * loadingPlan.truck.Height}";
 
             var (instructions, placedCrates, unplacedCrates) = GetLoadingResults();
@@ -56,16 +56,8 @@ namespace HahnCargoTruckLoader.WPF
             foreach (var crate in placedCrates)
             {
                 var instruction = instructions[crate.CrateID];
-                // Apply transformations if needed
                 crate.Turn(instruction);
-                double width = crate.Width;
-                double height = crate.Height;
-                double length = crate.Length;
-
-
-                // Use the transformed dimensions and the position from the instruction
-                Create3DBox(helixViewport, instruction.TopLeftX, instruction.TopLeftY, 0, width, height, length, Colors.Green);
-
+                Create3DBox(helixViewport, instruction.TopLeftX, instruction.TopLeftY, crate.Instruction.TopLeftZ, crate.Width, crate.Height, crate.Length, Colors.Green);
             }
 
             // Draw unplaced crates with red borders in a separate area
@@ -78,6 +70,7 @@ namespace HahnCargoTruckLoader.WPF
 
             helixViewport.Focus();
         }
+
 
         private void Create3DBox(HelixViewport3D viewport, double x, double y, double z, double width, double height, double length, Color borderColor)
         {

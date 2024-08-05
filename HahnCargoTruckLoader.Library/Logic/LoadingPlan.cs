@@ -38,7 +38,7 @@ namespace HahnCargoTruckLoader.Library.Logic
                         {
                             for (int y = 0; y < truck.Height - crate.Height + 1; y++)
                             {
-                                for (int z = 0; z < truck.Length - crate.Length + 1; z++)  // Correct iteration variable here
+                                for (int z = 0; z < truck.Length - crate.Length + 1; z++)  // Correct z iteration
                                 {
                                     if (IsPositionAvailable(x, y, z, crate, truck, placedCrates))
                                     {
@@ -50,6 +50,7 @@ namespace HahnCargoTruckLoader.Library.Logic
                                                 CrateId = crate.CrateID,
                                                 TopLeftX = x,
                                                 TopLeftY = y,
+                                                TopLeftZ = z,
                                                 TurnHorizontal = turnHorizontal == 1,
                                                 TurnVertical = turnVertical == 1
                                             };
@@ -58,12 +59,6 @@ namespace HahnCargoTruckLoader.Library.Logic
                                             crate.Instruction = instructions[crate.CrateID];
                                             placed = true;
                                             break;
-                                        }
-                                        else
-                                        {
-                                            // Handle duplicate CrateID if necessary
-                                            // This situation should not occur if CrateID is unique
-                                            Console.WriteLine($"Duplicate CrateID: {crate.CrateID}");
                                         }
                                     }
                                 }
