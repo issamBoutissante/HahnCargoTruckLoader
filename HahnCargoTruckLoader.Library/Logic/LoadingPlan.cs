@@ -83,13 +83,17 @@ namespace HahnCargoTruckLoader.Library.Logic
 
         private bool IsPositionAvailable(int x, int y, int z, Crate crate, List<CratePlacement> placedCrates)
         {
+            // Check if the crate exceeds the truck's boundaries
             if (x + crate.Width > truck.Width || y + crate.Height > truck.Height || z + crate.Length > truck.Length)
             {
+                // If any dimension of the crate exceeds the truck's size, the position is not available
                 return false;
             }
 
+            // Check if the crate overlaps with any already placed crates
             return placedCrates.All(placed => !DoCratesOverlap(placed, new CratePlacement(crate, x, y, z)));
         }
+
 
         /// <summary>
         /// Checks if two crates overlap.
@@ -140,22 +144,6 @@ namespace HahnCargoTruckLoader.Library.Logic
                     new() { TurnHorizontal = false, TurnVertical = true },
                     new() { TurnHorizontal = true, TurnVertical = true }
                 };
-            }
-        }
-
-        private class CratePlacement
-        {
-            public Crate Crate { get; }
-            public int X { get; }
-            public int Y { get; }
-            public int Z { get; }
-
-            public CratePlacement(Crate crate, int x, int y, int z)
-            {
-                Crate = crate;
-                X = x;
-                Y = y;
-                Z = z;
             }
         }
     }
