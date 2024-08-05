@@ -27,40 +27,47 @@ namespace HahnCargoTruckLoader.Library.Logic
 
             foreach (var crate in crates)
             {
-                bool placed = false;
-                for (int turnHorizontal = 0; turnHorizontal <= 1 && !placed; turnHorizontal++)
+                bool placed = PlaceCrate(crate, truck, instructions, placedCrates, ref stepNumber);
+                if (!placed)
                 {
-                    for (int turnVertical = 0; turnVertical <= 1 && !placed; turnVertical++)
+                    // Handle the case where the crate cannot be placed
+                    Console.WriteLine($"Crate {crate.CrateID} could not be placed.");
+                }
+            }
+
+            return instructions;
+        }
+
+        private bool PlaceCrate(Crate crate, Truck truck, Dictionary<int, LoadingInstruction> instructions, List<CratePlacement> placedCrates, ref int stepNumber)
+        {
+            for (int turnHorizontal = 0; turnHorizontal <= 1; turnHorizontal++)
+            {
+                for (int turnVertical = 0; turnVertical <= 1; turnVertical++)
+                {
+                    crate.Turn(new LoadingInstruction { TurnHorizontal = turnHorizontal == 1, TurnVertical = turnVertical == 1 });
+
+                    for (int x = 0; x < truck.Width - crate.Width + 1; x++)
                     {
-                        crate.Turn(new LoadingInstruction { TurnHorizontal = turnHorizontal == 1, TurnVertical = turnVertical == 1 });
-
-                        for (int x = 0; x < truck.Width - crate.Width + 1; x++)
+                        for (int y = 0; y < truck.Height - crate.Height + 1; y++)
                         {
-                            for (int y = 0; y < truck.Height - crate.Height + 1; y++)
+                            for (int z = 0; z < truck.Length - crate.Length + 1; z++)
                             {
-                                for (int z = 0; z < truck.Length - crate.Length + 1; z++)  // Correct z iteration
+                                if (IsPositionAvailable(x, y, z, crate, truck, placedCrates))
                                 {
-                                    if (IsPositionAvailable(x, y, z, crate, truck, placedCrates))
+                                    instructions[crate.CrateID] = new LoadingInstruction
                                     {
-                                        if (!instructions.ContainsKey(crate.CrateID))
-                                        {
-                                            instructions[crate.CrateID] = new LoadingInstruction
-                                            {
-                                                LoadingStepNumber = stepNumber++, // Assign and increment step number
-                                                CrateId = crate.CrateID,
-                                                TopLeftX = x,
-                                                TopLeftY = y,
-                                                TopLeftZ = z,
-                                                TurnHorizontal = turnHorizontal == 1,
-                                                TurnVertical = turnVertical == 1
-                                            };
+                                        LoadingStepNumber = stepNumber++, // Assign and increment step number
+                                        CrateId = crate.CrateID,
+                                        TopLeftX = x,
+                                        TopLeftY = y,
+                                        TopLeftZ = z,
+                                        TurnHorizontal = turnHorizontal == 1,
+                                        TurnVertical = turnVertical == 1
+                                    };
 
-                                            placedCrates.Add(new CratePlacement(crate, x, y, z));
-                                            crate.Instruction = instructions[crate.CrateID];
-                                            placed = true;
-                                            break;
-                                        }
-                                    }
+                                    placedCrates.Add(new CratePlacement(crate, x, y, z));
+                                    crate.Instruction = instructions[crate.CrateID];
+                                    return true; // Exit all loops and return success
                                 }
                             }
                         }
@@ -68,8 +75,9 @@ namespace HahnCargoTruckLoader.Library.Logic
                 }
             }
 
-            return instructions;
+            return false; // Return false if the crate could not be placed
         }
+
 
         private bool IsPositionAvailable(int x, int y, int z, Crate crate, Truck truck, List<CratePlacement> placedCrates)
         {
