@@ -8,13 +8,13 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using System;
 
 namespace HahnCargoTruckLoader.WPF
 {
     public partial class MainWindow : Window
     {
-        private List<Crate> crates;
-        private Truck truck;
+        private LoadingPlan loadingPlan;
 
         public MainWindow()
         {
@@ -25,27 +25,35 @@ namespace HahnCargoTruckLoader.WPF
 
         private void InitializeScene()
         {
-            truck = Initialize.LoadTruck();
-            crates = Initialize.GetCrates();
+            var truck = Initialize.LoadTruck();
+            var crates = Initialize.GetCrates();
+            loadingPlan = new LoadingPlan(truck, crates);
             CratesListView.ItemsSource = crates;
             RedrawScene();
         }
+        public (Dictionary<int, LoadingInstruction> instructions, List<Crate> placed, List<Crate> unplaced) GetLoadingResults()
+        {
+            var instructions = loadingPlan.GetLoadingInstructions();
 
+            // Extract placed and unplaced crates
+            var placedCrates = instructions.Keys.Select(id => loadingPlan.crates.First(c => c.CrateID == id)).ToList();
+            var unplacedCrates = loadingPlan.crates.Except(placedCrates).ToList();
+
+            return (instructions, placedCrates, unplacedCrates);
+        }
         private void RedrawScene()
         {
             helixViewport.Children.Clear();
             unplacedViewport.Children.Clear();
-            LoadingPlan loadingPlan = new LoadingPlan(truck, crates);
 
             // Draw the truck with yellow borders
-            Create3DBox(helixViewport, 0, 0, 0, truck.Width+1, truck.Height+1, truck.Length+1, Colors.Yellow);
+            Create3DBox(helixViewport, 0, 0, 0, loadingPlan.truck.Width + 1, loadingPlan.truck.Height + 1, loadingPlan.truck.Length + 1, Colors.Yellow);
 
-            var (instructions, placedCrates, unplacedCrates) = loadingPlan.GetLoadingResults();
+            var (instructions, placedCrates, unplacedCrates) = GetLoadingResults();
 
             // Draw placed crates with green borders
             foreach (var crate in placedCrates)
             {
-                // Draw placed crates with green borders
                 var instruction = instructions[crate.CrateID];
                 double width = crate.Width;
                 double height = crate.Height;
@@ -105,10 +113,6 @@ namespace HahnCargoTruckLoader.WPF
             mesh.Positions = corners;
             mesh.TriangleIndices = triangles;
 
-            GeometryModel3D model = new GeometryModel3D
-            {
-            };
-
             // Set edges to the specified border color
             LinesVisual3D edges = new LinesVisual3D
             {
@@ -122,17 +126,17 @@ namespace HahnCargoTruckLoader.WPF
                 corners[0], corners[4], corners[1], corners[5], corners[2], corners[6], corners[3], corners[7]  // Side edges
             };
 
-            ModelVisual3D visual = new ModelVisual3D { Content = model };
+            ModelVisual3D visual = new ModelVisual3D();
             viewport.Children.Add(visual);
             viewport.Children.Add(edges);
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            int newId = crates.Any() ? crates.Max(c => c.CrateID) + 1 : 1;
-            crates.Add(new Crate { CrateID = newId, Height = 2, Width = 1, Length = 4 });
+            int newId = loadingPlan.crates.Any() ? loadingPlan.crates.Max(c => c.CrateID) + 1 : 1;
+            loadingPlan.crates.Add(new Crate { CrateID = newId, Height = 2, Width = 1, Length = 4 });
             CratesListView.ItemsSource = null;
-            CratesListView.ItemsSource = crates;
+            CratesListView.ItemsSource = loadingPlan.crates;
             RedrawScene();
         }
 
@@ -140,12 +144,12 @@ namespace HahnCargoTruckLoader.WPF
         {
             if (sender is Button button && button.Tag is int crateId)
             {
-                var crateToRemove = crates.FirstOrDefault(c => c.CrateID == crateId);
+                var crateToRemove = loadingPlan.crates.FirstOrDefault(c => c.CrateID == crateId);
                 if (crateToRemove != null)
                 {
-                    crates.Remove(crateToRemove);
+                    loadingPlan.crates.Remove(crateToRemove);
                     CratesListView.ItemsSource = null;
-                    CratesListView.ItemsSource = crates;
+                    CratesListView.ItemsSource = loadingPlan.crates;
                     RedrawScene();
                 }
             }
@@ -199,33 +203,32 @@ namespace HahnCargoTruckLoader.WPF
                     break;
             }
         }
-
         private void unplacedViewport_KeyDown(object sender, KeyEventArgs e)
-        {
-            var rotationAngle = 5; // degrees
-            var axis = new Vector3D(0, 1, 0); // Default to Y-axis for horizontal rotation
-
-            switch (e.Key)
             {
-                case Key.Left:
-                    axis = new Vector3D(0, 1, 0); // Rotate left around Y-axis
-                    RotateScene(unplacedViewport, rotationAngle, axis);
-                    break;
-                case Key.Right:
-                    axis = new Vector3D(0, -1, 0); // Rotate right around Y-axis
-                    RotateScene(unplacedViewport, rotationAngle, axis);
-                    break;
+                var rotationAngle = 5; // degrees
+                var axis = new Vector3D(0, 1, 0); // Default to Y-axis for horizontal rotation
+
+                switch (e.Key)
+                {
+                    case Key.Left:
+                        axis = new Vector3D(0, 1, 0); // Rotate left around Y-axis
+                        RotateScene(unplacedViewport, rotationAngle, axis);
+                        break;
+                    case Key.Right:
+                        axis = new Vector3D(0, -1, 0); // Rotate right around Y-axis
+                        RotateScene(unplacedViewport, rotationAngle, axis);
+                        break;
+                }
+            }
+
+            private void FocusHelixViewport(object sender, RoutedEventArgs e)
+            {
+                helixViewport.Focus();
+            }
+
+            private void FocusUnplacedViewport(object sender, RoutedEventArgs e)
+            {
+                unplacedViewport.Focus();
             }
         }
-
-        private void FocusHelixViewport(object sender, RoutedEventArgs e)
-        {
-            helixViewport.Focus();
-        }
-
-        private void FocusUnplacedViewport(object sender, RoutedEventArgs e)
-        {
-            unplacedViewport.Focus();
-        }
     }
-}

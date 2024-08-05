@@ -9,94 +9,157 @@
     WindowState="Maximized">
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-        <!--  Main Truck Viewport  -->
-        <StackPanel>
-            <ListView Name="CratesListView" SelectionMode="Single">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn
-                            Width="50"
-                            DisplayMemberBinding="{Binding CrateID}"
-                            Header="ID" />
-                        <GridViewColumn
-                            Width="50"
-                            DisplayMemberBinding="{Binding Width}"
-                            Header="Width" />
-                        <GridViewColumn
-                            Width="50"
-                            DisplayMemberBinding="{Binding Height}"
-                            Header="Height" />
-                        <GridViewColumn
-                            Width="50"
-                            DisplayMemberBinding="{Binding Length}"
-                            Header="Length" />
-                        <GridViewColumn Width="60" Header="Actions">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button
-                                        Click="RemoveButton_Click"
-                                        Content="Remove"
-                                        Tag="{Binding CrateID}" />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-            <Button
-                Margin="5"
-                Click="AddButton_Click"
-                Content="Add Crate" />
-        </StackPanel>
-        <Grid Grid.Column="1" Margin="5,0,5,0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Button Click="FocusHelixViewport" Content="Placed Crates (click here and use arrow keys to rotate)" />
-            <helix:HelixViewport3D
-                Name="helixViewport"
-                Grid.Row="1"
-                IsHitTestVisible="False"
-                KeyDown="helixViewport_KeyDown">
-                <helix:HelixViewport3D.Camera>
-                    <PerspectiveCamera
-                        FieldOfView="45"
-                        LookDirection="0, 1, -1"
-                        Position="0, -10, 10"
-                        UpDirection="0, 0, 1" />
-                </helix:HelixViewport3D.Camera>
-                <helix:DefaultLights />
-            </helix:HelixViewport3D>
-        </Grid>
+        <Border
+            Grid.RowSpan="2"
+            Margin="0,0,5,0"
+            BorderBrush="Black"
+            BorderThickness="1">
+            <StackPanel>
+
+                <ListView Name="CratesListView" SelectionMode="Single">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn
+                                Width="50"
+                                DisplayMemberBinding="{Binding CrateID}"
+                                Header="ID" />
+                            <GridViewColumn
+                                Width="50"
+                                DisplayMemberBinding="{Binding Width}"
+                                Header="Width" />
+                            <GridViewColumn
+                                Width="50"
+                                DisplayMemberBinding="{Binding Height}"
+                                Header="Height" />
+                            <GridViewColumn
+                                Width="50"
+                                DisplayMemberBinding="{Binding Length}"
+                                Header="Length" />
+                            <GridViewColumn Width="80" Header="Volume">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Volume}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Width="50" Header="Step">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Instruction.LoadingStepNumber, TargetNullValue='Not Placed'}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Width="100" Header="TopLeftX">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Instruction.TopLeftX, TargetNullValue='Not Placed'}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Width="100" Header="TopLeftY">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Instruction.TopLeftY, TargetNullValue='Not Placed'}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Width="80" Header="TurnHorizontal">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Instruction.TurnHorizontal, TargetNullValue='Not Placed'}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Width="80" Header="TurnVertical">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Instruction.TurnVertical, TargetNullValue='Not Placed'}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Width="60" Header="Actions">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button
+                                            Click="RemoveButton_Click"
+                                            Content="Remove"
+                                            Tag="{Binding CrateID}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <Button
+                    Margin="5"
+                    Click="AddButton_Click"
+                    Content="Add Crate" />
+            </StackPanel>
+        </Border>
+
+        <Border
+            Grid.Column="1"
+            BorderBrush="Black"
+            BorderThickness="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Button Click="FocusHelixViewport" Content="Placed Crates (click here and use arrow keys to rotate)" />
+                <helix:HelixViewport3D
+                    Name="helixViewport"
+                    Grid.Row="1"
+                    IsHitTestVisible="False"
+                    KeyDown="helixViewport_KeyDown">
+                    <helix:HelixViewport3D.Camera>
+                        <PerspectiveCamera
+                            FieldOfView="45"
+                            LookDirection="0, 1, -1"
+                            Position="0, -10, 10"
+                            UpDirection="0, 0, 1" />
+                    </helix:HelixViewport3D.Camera>
+                    <helix:DefaultLights />
+                </helix:HelixViewport3D>
+            </Grid>
+        </Border>
 
         <!--  Unplaced Crates Viewport  -->
-        <Grid Grid.Column="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Button Click="FocusUnplacedViewport" Content="Unplaced Crates (Click here and use arrow keys to scroll)" />
-            <helix:HelixViewport3D
-                Name="unplacedViewport"
-                Grid.Row="1"
-                Grid.Column="2"
-                IsHitTestVisible="False"
-                KeyDown="unplacedViewport_KeyDown">
-                <helix:HelixViewport3D.Camera>
-                    <PerspectiveCamera
-                        FieldOfView="45"
-                        LookDirection="0, 1, -1"
-                        Position="0, -10, 10"
-                        UpDirection="0, 0, 1" />
-                </helix:HelixViewport3D.Camera>
-                <helix:DefaultLights />
-            </helix:HelixViewport3D>
-        </Grid>
+        <Border
+            Grid.Row="1"
+            Grid.Column="1"
+            BorderBrush="Black"
+            BorderThickness="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Button Click="FocusUnplacedViewport" Content="Unplaced Crates (Click here and use arrow keys to scroll)" />
+                <helix:HelixViewport3D
+                    Name="unplacedViewport"
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    IsHitTestVisible="False"
+                    KeyDown="unplacedViewport_KeyDown">
+                    <helix:HelixViewport3D.Camera>
+                        <PerspectiveCamera
+                            FieldOfView="45"
+                            LookDirection="0, 1, -1"
+                            Position="0, -10, 10"
+                            UpDirection="0, 0, 1" />
+                    </helix:HelixViewport3D.Camera>
+                    <helix:DefaultLights />
+                </helix:HelixViewport3D>
+            </Grid>
+        </Border>
     </Grid>
 </Window>
