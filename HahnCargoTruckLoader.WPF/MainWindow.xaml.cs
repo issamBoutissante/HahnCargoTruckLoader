@@ -105,12 +105,8 @@ namespace HahnCargoTruckLoader.WPF
             mesh.Positions = corners;
             mesh.TriangleIndices = triangles;
 
-            // Transparent material for all objects (no fill)
-            Material material = new DiffuseMaterial(new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)));
             GeometryModel3D model = new GeometryModel3D
             {
-                Geometry = mesh,
-                Material = material
             };
 
             // Set edges to the specified border color
@@ -222,12 +218,12 @@ namespace HahnCargoTruckLoader.WPF
             }
         }
 
-        private void helixViewport_MouseEnter(object sender, MouseEventArgs e)
+        private void FocusHelixViewport(object sender, RoutedEventArgs e)
         {
             helixViewport.Focus();
         }
 
-        private void unplacedViewport_MouseEnter(object sender, MouseEventArgs e)
+        private void FocusUnplacedViewport(object sender, RoutedEventArgs e)
         {
             unplacedViewport.Focus();
         }

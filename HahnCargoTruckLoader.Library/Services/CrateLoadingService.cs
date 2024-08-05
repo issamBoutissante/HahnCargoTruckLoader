@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HahnCargoTruckLoader.Library.Model;
 
-namespace HahnCargoTruckLoader.Library
+namespace HahnCargoTruckLoader.Library.Services
 {
     public class CrateLoadingService
     {

@@ -7,7 +7,7 @@
     Width="800"
     Height="450"
     WindowState="Maximized">
-    <Grid>
+    <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="2*" />
@@ -53,38 +53,50 @@
                 Click="AddButton_Click"
                 Content="Add Crate" />
         </StackPanel>
-        <helix:HelixViewport3D
-            Name="helixViewport"
-            Grid.Column="1"
-            IsHitTestVisible="False"
-            KeyDown="helixViewport_KeyDown"
-            MouseEnter="helixViewport_MouseEnter">
-            <helix:HelixViewport3D.Camera>
-                <PerspectiveCamera
-                    FieldOfView="45"
-                    LookDirection="0, 1, -1"
-                    Position="0, -10, 10"
-                    UpDirection="0, 0, 1" />
-            </helix:HelixViewport3D.Camera>
-            <helix:DefaultLights />
-        </helix:HelixViewport3D>
+        <Grid Grid.Column="1" Margin="5,0,5,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Button Click="FocusHelixViewport" Content="Placed Crates (click here and use arrow keys to rotate)" />
+            <helix:HelixViewport3D
+                Name="helixViewport"
+                Grid.Row="1"
+                IsHitTestVisible="False"
+                KeyDown="helixViewport_KeyDown">
+                <helix:HelixViewport3D.Camera>
+                    <PerspectiveCamera
+                        FieldOfView="45"
+                        LookDirection="0, 1, -1"
+                        Position="0, -10, 10"
+                        UpDirection="0, 0, 1" />
+                </helix:HelixViewport3D.Camera>
+                <helix:DefaultLights />
+            </helix:HelixViewport3D>
+        </Grid>
 
         <!--  Unplaced Crates Viewport  -->
-        <helix:HelixViewport3D
-            Name="unplacedViewport"
-            Grid.Column="2"
-            IsHitTestVisible="False"
-            KeyDown="unplacedViewport_KeyDown"
-            MouseEnter="unplacedViewport_MouseEnter">
-            <helix:HelixViewport3D.Camera>
-                <PerspectiveCamera
-                    FieldOfView="45"
-                    LookDirection="0, 1, -1"
-                    Position="0, -10, 10"
-                    UpDirection="0, 0, 1" />
-            </helix:HelixViewport3D.Camera>
-            <helix:DefaultLights />
-        </helix:HelixViewport3D>
-
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Button Click="FocusUnplacedViewport" Content="Unplaced Crates (Click here and use arrow keys to scroll)" />
+            <helix:HelixViewport3D
+                Name="unplacedViewport"
+                Grid.Row="1"
+                Grid.Column="2"
+                IsHitTestVisible="False"
+                KeyDown="unplacedViewport_KeyDown">
+                <helix:HelixViewport3D.Camera>
+                    <PerspectiveCamera
+                        FieldOfView="45"
+                        LookDirection="0, 1, -1"
+                        Position="0, -10, 10"
+                        UpDirection="0, 0, 1" />
+                </helix:HelixViewport3D.Camera>
+                <helix:DefaultLights />
+            </helix:HelixViewport3D>
+        </Grid>
     </Grid>
 </Window>
