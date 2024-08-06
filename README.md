@@ -3,7 +3,7 @@
 ## Project Structure
 
 The `HahnCargoTruckLoader` solution consists of three projects:
-![Activity Diagram](Images/solution.png)
+![Activity Diagram](Images/Solution.png)
 
 1. **HahnCargoTruckLoader**:
    - This project contains the console application used for testing and demonstrating the core logic. It serves as a basic test harness for running the crate loading algorithm.
