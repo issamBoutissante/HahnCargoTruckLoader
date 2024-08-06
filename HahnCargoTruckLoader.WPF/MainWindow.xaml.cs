@@ -134,7 +134,7 @@ namespace HahnCargoTruckLoader.WPF
                 var crateToRemove = loadingPlan.crates.FirstOrDefault(c => c.CrateID == crateId);
                 if (crateToRemove != null)
                 {
-                    loadingPlan.crates.Remove(crateToRemove);
+                    loadingPlan.crates.RemoveAll(c=>crateToRemove.CrateID==c.CrateID);
                     CratesListView.ItemsSource = null;
                     CratesListView.ItemsSource = loadingPlan.crates;
                     RedrawScene();

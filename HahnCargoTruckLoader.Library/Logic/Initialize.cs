@@ -41,7 +41,6 @@ namespace HahnCargoTruckLoader.Library.Logic
         ];
         FileHelper.WriteToFile("Crates", JsonSerializer.Serialize(crates));
       }
-
       return crates;
     }
 

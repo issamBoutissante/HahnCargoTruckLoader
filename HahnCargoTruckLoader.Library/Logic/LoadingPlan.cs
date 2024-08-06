@@ -20,6 +20,7 @@ namespace HahnCargoTruckLoader.Library.Logic
 
         public Dictionary<int, LoadingInstruction> GetLoadingInstructions()
         {
+            instructions.Clear();
             var placedCrates = new List<CratePlacement>();
             int stepNumber = 1;
 
