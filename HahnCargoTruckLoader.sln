@@ -10,9 +10,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HahnCargoTruckLoader.WPF", "HahnCargoTruckLoader.WPF\HahnCargoTruckLoader.WPF.csproj", "{8E6161D7-2FDB-4C51-8985-45A4D6778632}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HahnCargoTruckLoader.WPF", "HahnCargoTruckLoader.WPF\HahnCargoTruckLoader.WPF.csproj", "{8E6161D7-2FDB-4C51-8985-45A4D6778632}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HahnCargoTruckLoader.Library", "HahnCargoTruckLoader.Library\HahnCargoTruckLoader.Library.csproj", "{F6AEF21D-FDA7-4B41-9007-74A3695168ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HahnCargoTruckLoader.Library", "HahnCargoTruckLoader.Library\HahnCargoTruckLoader.Library.csproj", "{F6AEF21D-FDA7-4B41-9007-74A3695168ED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{A8AC20AE-EFD1-4384-9E55-3B515524B8A1}"
+	ProjectSection(SolutionItems) = preProject
+		Images\activity_diagram.png = Images\activity_diagram.png
+		Images\Solution.png = Images\Solution.png
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
